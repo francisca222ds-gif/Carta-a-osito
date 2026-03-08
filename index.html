@@ -8,7 +8,6 @@
         :root {
             --poke-red: #ff3838;
             --poke-gold: #ffcb05;
-            --poke-blue: #3b4cca;
             --bg-dark: #0a0a0c;
         }
 
@@ -18,149 +17,124 @@
             font-family: 'Montserrat', sans-serif;
             overflow: hidden;
             background-color: var(--bg-dark);
-            color: white;
         }
 
-        /* --- FONDO DE ESTRELLAS --- */
         #star-field {
             position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            z-index: 0;
+            inset: 0; z-index: 0;
             background: radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%);
         }
 
         /* --- PANTALLA INICIAL --- */
         #intro-screen {
-            position: fixed;
-            inset: 0;
-            background: black;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 100;
-            transition: opacity 1s ease;
-        }
-
-        .intro-text {
-            font-size: 1.8rem;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            text-shadow: 0 0 10px var(--poke-gold);
-            margin-bottom: 40px;
-            text-align: center;
-            padding: 0 20px;
+            position: fixed; inset: 0; background: black;
+            display: flex; flex-direction: column;
+            justify-content: center; align-items: center;
+            z-index: 100; transition: opacity 1s ease;
         }
 
         .btn-yes {
-            padding: 18px 50px;
-            font-size: 1.2rem;
-            font-weight: bold;
-            cursor: pointer;
-            background: var(--poke-red);
-            color: white;
-            border: 4px solid white;
-            border-radius: 50px;
+            padding: 18px 60px; font-size: 1.5rem; font-weight: bold;
+            cursor: pointer; background: var(--poke-red); color: white;
+            border: 4px solid white; border-radius: 50px;
             box-shadow: 0 0 25px var(--poke-red);
-            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
         .btn-no {
-            position: absolute;
-            padding: 8px 20px;
-            background: #333;
-            color: #888;
-            border: 1px solid #444;
-            border-radius: 20px;
-            cursor: pointer;
-            transition: 0.1s;
+            position: absolute; padding: 8px 20px;
+            background: #333; color: #888; border-radius: 20px;
+            cursor: pointer; left: 60%;
         }
 
         /* --- TELONES --- */
         .curtain {
-            position: fixed;
-            top: 0; width: 50.5%; height: 100%;
+            position: fixed; top: 0; width: 51%; height: 100%;
             background: linear-gradient(to right, #7b0000, #b30000);
-            z-index: 50;
-            transition: transform 1.8s cubic-bezier(0.645, 0.045, 0.355, 1);
-            box-shadow: 0 0 50px rgba(0,0,0,0.8);
+            z-index: 50; transition: transform 1.8s cubic-bezier(0.645, 0.045, 0.355, 1);
         }
         .curtain.left { left: 0; }
         .curtain.right { right: 0; }
         .open-left { transform: translateX(-100%); }
         .open-right { transform: translateX(100%); }
 
-        /* --- FALINKS Y ANIMACIÓN --- */
-        #falinks-container {
+        /* --- CONTENEDOR DE LA CARTA 3D --- */
+        #card-wrapper {
             position: absolute;
-            top: 55%; left: 50%;
+            top: 50%; left: 50%;
             transform: translate(-50%, -50%) scale(0);
+            perspective: 1000px;
             z-index: 10;
-            filter: drop-shadow(0 0 20px var(--poke-gold));
+            transition: transform 0.8s ease;
+        }
+
+        .flip-card-inner {
+            position: relative;
+            width: 320px;
+            height: 460px;
+            transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-style: preserve-3d;
+        }
+
+        .do-flip { transform: rotateY(180deg); }
+
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%; height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            border-radius: 18px;
+            border: 10px solid var(--poke-gold);
+            box-shadow: 0 0 40px rgba(255, 203, 5, 0.5);
+            overflow: hidden;
+        }
+
+        /* LADO A: Foto carta.png */
+        .card-front {
+            background-color: #222;
+        }
+        
+        .card-front img {
+            width: 100%; height: 100%;
+            object-fit: cover;
+        }
+
+        /* LADO B: Mensaje corregido */
+        .card-back {
+            background: white;
+            color: #1a1a1a;
+            transform: rotateY(180deg);
+            padding: 20px;
+            box-sizing: border-box;
+            display: flex; flex-direction: column;
+        }
+
+        /* --- ANIMACIONES --- */
+        #falinks-container {
+            position: absolute; top: 55%; left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            z-index: 20;
             transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
-
         .falinks-appear { transform: translate(-50%, -50%) scale(1.8) !important; }
-
-        .shake { animation: shake-screen 0.5s; }
-        @keyframes shake-screen {
-            0%, 100% { transform: translate(0, 0); }
-            20% { transform: translate(-10px, 10px); }
-            40% { transform: translate(10px, -10px); }
-            60% { transform: translate(-10px, -10px); }
-            80% { transform: translate(10px, 10px); }
-        }
 
         #flash {
             position: fixed; inset: 0; background: white;
             opacity: 0; z-index: 60; pointer-events: none;
         }
         .flash-active { animation: flash-anim 0.8s forwards; }
-        @keyframes flash-anim {
-            0% { opacity: 0; } 40% { opacity: 1; } 100% { opacity: 0; }
+        @keyframes flash-anim { 0% { opacity: 0; } 40% { opacity: 1; } 100% { opacity: 0; } }
+
+        .shake { animation: shake-screen 0.5s; }
+        @keyframes shake-screen {
+            20% { transform: translate(-5px, 5px); }
+            40% { transform: translate(5px, -5px); }
+            80% { transform: translate(5px, 5px); }
         }
 
-        /* --- CARTA POKÉMON --- */
-        #letter-container {
-            position: absolute;
-            top: 50%; left: 50%;
-            transform: translate(-50%, -50%) scale(0) rotate(-10deg);
-            z-index: 5;
-            transition: transform 1.2s cubic-bezier(0.19, 1, 0.22, 1);
-        }
-
-        .show-letter { transform: translate(-50%, -50%) scale(1) rotate(0deg) !important; }
-
-        .pokemon-card {
-            width: 320px;
-            background: linear-gradient(135deg, #ffffff 0%, #f0f0f0 100%);
-            border: 12px solid var(--poke-gold);
-            border-radius: 18px;
-            padding: 20px;
-            color: #1a1a1a;
-            box-shadow: 0 0 40px rgba(255, 203, 5, 0.5);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-weight: 900;
-            border-bottom: 2px solid #3b4cca;
-            margin-bottom: 15px;
-            padding-bottom: 5px;
-        }
-
-        .card-body {
-            font-size: 0.9rem;
-            line-height: 1.5;
-            text-align: left;
-        }
-
-        .hp { color: var(--poke-red); font-size: 1.2rem; }
-        strong { color: #000; font-weight: 800; }
+        .card-header { display: flex; justify-content: space-between; font-weight: 900; border-bottom: 2px solid #3b4cca; margin-bottom: 10px; padding-bottom: 5px; }
+        .card-body { font-size: 0.88rem; line-height: 1.45; text-align: left; overflow-y: auto; color: #333; }
+        .hp { color: var(--poke-red); }
+        strong { color: #000; }
     </style>
 </head>
 <body>
@@ -168,11 +142,9 @@
     <div id="star-field"></div>
 
     <div id="intro-screen">
-        <div class="intro-text">gerson te manda un regalo</div>
-        <div class="buttons">
-            <button class="btn-yes" onclick="iniciar()">SÍ</button>
-            <button class="btn-no" id="btnNo" onmouseover="huir()" ontouchstart="huir()">No</button>
-        </div>
+        <h1 style="color: white; font-family: sans-serif; margin-bottom: 30px;">gerson te manda un regalo</h1>
+        <button class="btn-yes" onclick="iniciar()">SÍ</button>
+        <button class="btn-no" id="btnNo" onmouseover="huir()" ontouchstart="huir()">No</button>
     </div>
 
     <div id="main-stage" style="display: none;">
@@ -185,16 +157,21 @@
 
         <div id="flash"></div>
 
-        <div id="letter-container">
-            <div class="pokemon-card">
-                <div class="card-header">
-                    <span>Daniel & Gersito ❤️</span>
-                    <span class="hp"><small>HP</small> ∞</span>
+        <div id="card-wrapper">
+            <div class="flip-card-inner" id="innerCard">
+                <div class="card-front">
+                    <img src="carta.png" alt="Regalo">
                 </div>
-                <div class="card-body">
-                    <p>Hola Daniel, soy yo <strong>gersito el chocoreto, la Morsita</strong>.</p>
-                    <p>Nuestro fin de semana fue hermoso; es perfecto como nosotros. Quizás algunas veces me tardo en procesar algunas cositas y decirlo, pero al final comprendo todo y entiendo el porqué de mis sentimientos.</p> 
-                    <p>Hablo del corazón cada que te veo y a veces sueno medio tonto; en realidad somos hermosos. Quiero construir contigo un millón de sueños, caminar juntos por la cuerda floja para saber y decir "este soy yo", para saber que somos un gran show, que juntos podremos reescribir las estrellas y nunca tener suficiente, y ser hermosos ahora, ser un cielo lleno de estrellas juntos.</p>
+                <div class="card-back">
+                    <div class="card-header">
+                        <span>Morsita & osito ❤️</span>
+                        <span class="hp"><small>HP</small> ∞</span>
+                    </div>
+                    <div class="card-body">
+                        <p>Hola Daniel, soy yo <strong>gersito el chocoreto, la Morsita</strong>.</p>
+                        <p>Nuestro fin de semana fue hermoso; es perfecto como nosotros. Quizás algunas veces me tardo en procesar algunas cositas y decirlo, pero al final comprendo todo y entiendo el porqué de mis sentimientos.</p>
+                        <p>Hablo del corazón cada que te veo y a veces sueno medio tonto; en realidad somos hermosos. Quiero construir contigo un millón de sueños, caminar juntos por la cuerda floja para saber y decir "este soy yo", para saber que somos un gran show, que juntos podremos reescribirlo en las estrellas y nunca tener suficiente, y ser hermosos ahora, ser un cielo lleno de estrellas juntos.</p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -225,13 +202,20 @@
         function secuenciaPokemon() {
             const falinks = document.getElementById('falinks-container');
             falinks.classList.add('falinks-appear');
+            
             setTimeout(() => {
                 document.body.classList.add('shake');
                 document.getElementById('flash').classList.add('flash-active');
+                
                 setTimeout(() => {
                     falinks.style.display = 'none';
                     document.body.classList.remove('shake');
-                    document.getElementById('letter-container').classList.add('show-letter');
+                    const wrapper = document.getElementById('card-wrapper');
+                    wrapper.style.transform = "translate(-50%, -50%) scale(1)";
+                    
+                    setTimeout(() => {
+                        document.getElementById('innerCard').classList.add('do-flip');
+                    }, 1800);
                 }, 300);
             }, 2500);
         }
