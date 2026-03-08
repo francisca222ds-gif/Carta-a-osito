@@ -4,52 +4,237 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Un regalo para Daniel</title>
-    <link rel="stylesheet" href="style.css">
+    <style>
+        :root {
+            --poke-red: #ff0000;
+            --poke-gold: #ffcb05;
+            --dark: #000;
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            font-family: 'Arial', sans-serif;
+            overflow: hidden;
+            background-color: var(--dark);
+            color: white;
+        }
+
+        /* --- PANTALLA INICIAL --- */
+        #intro-screen {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            background: black;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            text-align: center;
+        }
+
+        .buttons {
+            margin-top: 30px;
+            position: relative;
+            width: 100%;
+            height: 100px;
+        }
+
+        .btn-yes {
+            padding: 15px 40px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            background: var(--poke-red);
+            color: white;
+            border: 3px solid white;
+            border-radius: 50px;
+            box-shadow: 0 0 20px var(--poke-red);
+            transition: transform 0.2s;
+        }
+
+        .btn-no {
+            position: absolute;
+            padding: 10px 25px;
+            background: #555;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            left: 60%;
+        }
+
+        /* --- ESCENARIO --- */
+        #main-stage {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            display: none;
+            background: radial-gradient(circle, #222, #000);
+        }
+
+        .curtain {
+            position: fixed;
+            top: 0;
+            width: 50%;
+            height: 100%;
+            background: #8B0000;
+            z-index: 50;
+            transition: transform 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+            border-bottom: 10px solid #5a0000;
+        }
+        .curtain.left { left: 0; border-right: 2px solid var(--poke-gold); }
+        .curtain.right { right: 0; border-left: 2px solid var(--poke-gold); }
+
+        .open-left { transform: translateX(-100%); }
+        .open-right { transform: translateX(100%); }
+
+        /* --- FALINKS Y EXPLOSIÓN --- */
+        #falinks-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            z-index: 10;
+            transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .falinks-appear { transform: translate(-50%, -50%) scale(1.5) !important; }
+
+        #flash {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: white;
+            opacity: 0;
+            z-index: 60;
+            pointer-events: none;
+        }
+
+        .flash-active { animation: flash-anim 0.7s forwards; }
+        @keyframes flash-anim {
+            0% { opacity: 0; }
+            50% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+
+        /* --- CARTA POKÉMON --- */
+        #letter-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            z-index: 5;
+            transition: transform 1s ease;
+        }
+
+        .show-letter { transform: translate(-50%, -50%) scale(1) !important; }
+
+        .pokemon-card {
+            width: 320px;
+            background: #fdfdfd;
+            border: 12px solid var(--poke-gold);
+            border-radius: 15px;
+            padding: 15px;
+            color: #333;
+            box-shadow: 0 0 40px rgba(255, 203, 5, 0.6);
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            font-weight: bold;
+            border-bottom: 2px solid #ccc;
+            margin-bottom: 10px;
+            padding-bottom: 5px;
+        }
+
+        .card-text {
+            font-size: 0.95rem;
+            line-height: 1.4;
+            text-align: justify;
+        }
+
+        .hp { color: #d32f2f; }
+        .hidden { display: none; }
+    </style>
 </head>
 <body>
 
-    <div id="intro-screen" class="screen">
-        <div class="intro-content">
-            <h1>Gerson te manda un regalo</h1>
-            <div class="buttons">
-                <button onclick="startExperience()" class="btn-yes">¿Aceptar?</button>
-                <button onmouseover="moveButton(this)" class="btn-no">No</button>
-            </div>
+    <div id="intro-screen">
+        <h1>Gerson te manda un regalo</h1>
+        <div class="buttons">
+            <button class="btn-yes" onclick="iniciar()">¿Aceptar?</button>
+            <button class="btn-no" onmouseover="huir(this)" ontouchstart="huir(this)">No</button>
         </div>
     </div>
 
-    <div id="main-stage" class="screen hidden">
-        <div class="curtain left"></div>
-        <div class="curtain right"></div>
+    <div id="main-stage">
+        <div class="curtain left" id="c-left"></div>
+        <div class="curtain right" id="c-right"></div>
 
-        <div class="arena">
-            <div id="falinks" class="hidden-element">
-                <div class="falinks-unit"></div>
-                <div class="falinks-unit"></div>
-                <div class="falinks-unit"></div>
-            </div>
-            
-            <div id="explosion" class="explosion-effect"></div>
+        <div id="falinks-container">
+            <img src="https://64.media.tumblr.com/96d7889139a2657c4a1049d0323845bf/ba0e263fa9d491ef-11/s540x810/df1fc3ed3da19963c222e93d380bbdf59cff197e.gif" width="250" alt="Falinks">
+        </div>
 
-            <div id="letter-container" class="hidden-element">
-                <div class="pokemon-card">
-                    <div class="card-header">
-                        <span class="trainer-name">Entrenador: Daniel</span>
-                        <span class="hp">∞ HP</span>
-                    </div>
-                    <div class="card-content">
-                        <p>Hola Daniel, soy yo cerdito el chocoreto, la Morsita...</p>
-                        <p>Nuestro fin de semana fue hermoso, es perfecto como nosotros. Quizás algunas veces me tardo en procesar algunas cositas y decirlo, pero al final comprendo todo. Entiendo el por qué de mis sentimientos; hablo del corazón cada que te veo y a veces sueno medio tonto.</p>
-                        <p>En realidad somos hermosos, quiero construir contigo un millón de sueños, caminar juntos por la cuerda floja, para saber y decir "este soy yo", para saber que somos un gran show, que juntos podremos reescribir las estrellas, y nunca tener suficiente, y ser hermosos ahora, ser un cielo lleno de estrellas juntos.</p>
-                    </div>
-                    <div class="card-footer">
-                        <span>✨ Rareza: Legendaria ✨</span>
-                    </div>
+        <div id="flash"></div>
+
+        <div id="letter-container">
+            <div class="pokemon-card">
+                <div class="card-header">
+                    <span>Morsita & Cerdito</span>
+                    <span class="hp">∞ HP</span>
+                </div>
+                <div class="card-text">
+                    <p><strong>Hola Daniel,</strong> soy yo cerdito el chocoreto, la Morsita.</p>
+                    <p>Nuestro fin de semana fue hermoso, es perfecto como nosotros. Quizás algunas veces me tardo en procesar algunas cositas y decirlo pero al final comprendo todo y entiendo el por qué de mis sentimientos.</p>
+                    <p>Hablo del corazón cada que te veo y a veces sueno medio tonto, en realidad somos hermosos. Quiero construir contigo un millón de sueños, caminar juntos por la cuerda floja, para saber y decir "este soy yo", para saber que somos un gran show, que juntos podremos reescribirlo en las estrellas, y nunca tener suficiente, y ser hermosos ahora, ser un cielo lleno de estrellas juntos.</p>
                 </div>
             </div>
         </div>
     </div>
 
-    <script src="script.js"></script>
+    <script>
+        function huir(btn) {
+            const x = Math.random() * (window.innerWidth - btn.offsetWidth);
+            const y = Math.random() * (window.innerHeight - btn.offsetHeight);
+            btn.style.left = x + "px";
+            btn.style.top = y + "px";
+        }
+
+        function iniciar() {
+            // Ocultar pantalla inicial
+            document.getElementById('intro-screen').style.display = 'none';
+            document.getElementById('main-stage').style.display = 'block';
+
+            // 1. Abrir Telones
+            setTimeout(() => {
+                document.getElementById('c-left').classList.add('open-left');
+                document.getElementById('c-right').classList.add('open-right');
+                
+                // 2. Aparece Falinks
+                setTimeout(secuenciaPokemon, 1200);
+            }, 100);
+        }
+
+        function secuenciaPokemon() {
+            const falinks = document.getElementById('falinks-container');
+            falinks.classList.add('falinks-appear');
+
+            // 3. Explosión
+            setTimeout(() => {
+                document.getElementById('flash').classList.add('flash-active');
+                
+                // 4. Cambiar Falinks por la Carta
+                setTimeout(() => {
+                    falinks.style.display = 'none';
+                    document.getElementById('letter-container').classList.add('show-letter');
+                }, 300);
+            }, 2000);
+        }
+    </script>
 </body>
 </html>
