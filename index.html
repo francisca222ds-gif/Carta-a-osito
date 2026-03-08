@@ -3,181 +3,204 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Un regalo para Daniel</title>
+    <title>Para Daniel ✨</title>
     <style>
         :root {
-            --poke-red: #ff0000;
+            --poke-red: #ff3838;
             --poke-gold: #ffcb05;
-            --dark: #000;
+            --poke-blue: #3b4cca;
+            --bg-dark: #0a0a0c;
         }
 
         body, html {
-            margin: 0;
-            padding: 0;
-            width: 100%;
-            height: 100%;
-            font-family: 'Arial', sans-serif;
+            margin: 0; padding: 0;
+            width: 100%; height: 100%;
+            font-family: 'Montserrat', sans-serif;
             overflow: hidden;
-            background-color: var(--dark);
+            background-color: var(--bg-dark);
             color: white;
+        }
+
+        /* --- FONDO DE ESTRELLAS --- */
+        #star-field {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 0;
+            background: radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%);
         }
 
         /* --- PANTALLA INICIAL --- */
         #intro-screen {
             position: fixed;
-            width: 100%;
-            height: 100%;
+            inset: 0;
             background: black;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             z-index: 100;
-            text-align: center;
+            transition: opacity 1s ease;
         }
 
-        .buttons {
-            margin-top: 30px;
-            position: relative;
-            width: 100%;
-            height: 100px;
+        .intro-text {
+            font-size: 1.8rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            text-shadow: 0 0 10px var(--poke-gold);
+            margin-bottom: 40px;
         }
 
         .btn-yes {
-            padding: 15px 40px;
-            font-size: 1.5rem;
+            padding: 18px 50px;
+            font-size: 1.2rem;
+            font-weight: bold;
             cursor: pointer;
             background: var(--poke-red);
             color: white;
-            border: 3px solid white;
+            border: 4px solid white;
             border-radius: 50px;
-            box-shadow: 0 0 20px var(--poke-red);
-            transition: transform 0.2s;
+            box-shadow: 0 0 25px var(--poke-red);
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
+
+        .btn-yes:hover { transform: scale(1.1); }
 
         .btn-no {
             position: absolute;
-            padding: 10px 25px;
-            background: #555;
-            color: white;
-            border: none;
+            padding: 8px 20px;
+            background: #333;
+            color: #888;
+            border: 1px solid #444;
             border-radius: 20px;
             cursor: pointer;
-            left: 60%;
+            transition: 0.1s;
         }
 
-        /* --- ESCENARIO --- */
-        #main-stage {
-            position: relative;
-            width: 100vw;
-            height: 100vh;
-            display: none;
-            background: radial-gradient(circle, #222, #000);
-        }
-
+        /* --- TELONES --- */
         .curtain {
             position: fixed;
-            top: 0;
-            width: 50%;
-            height: 100%;
-            background: #8B0000;
+            top: 0; width: 50.5%; height: 100%;
+            background: linear-gradient(to right, #7b0000, #b30000);
             z-index: 50;
-            transition: transform 1.5s cubic-bezier(0.4, 0, 0.2, 1);
-            border-bottom: 10px solid #5a0000;
+            transition: transform 1.8s cubic-bezier(0.645, 0.045, 0.355, 1);
+            box-shadow: 0 0 50px rgba(0,0,0,0.8);
         }
-        .curtain.left { left: 0; border-right: 2px solid var(--poke-gold); }
-        .curtain.right { right: 0; border-left: 2px solid var(--poke-gold); }
-
+        .curtain.left { left: 0; }
+        .curtain.right { right: 0; }
         .open-left { transform: translateX(-100%); }
         .open-right { transform: translateX(100%); }
 
-        /* --- FALINKS Y EXPLOSIÓN --- */
+        /* --- FALINKS Y ANIMACIÓN DE IMPACTO --- */
         #falinks-container {
             position: absolute;
-            top: 50%;
-            left: 50%;
+            top: 55%; left: 50%;
             transform: translate(-50%, -50%) scale(0);
             z-index: 10;
-            transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            filter: drop-shadow(0 0 20px var(--poke-gold));
+            transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
-        .falinks-appear { transform: translate(-50%, -50%) scale(1.5) !important; }
+        .falinks-appear { transform: translate(-50%, -50%) scale(1.8) !important; }
+
+        .shake { animation: shake-screen 0.5s; }
+        @keyframes shake-screen {
+            0%, 100% { transform: translate(0, 0); }
+            20% { transform: translate(-10px, 10px); }
+            40% { transform: translate(10px, -10px); }
+            60% { transform: translate(-10px, -10px); }
+            80% { transform: translate(10px, 10px); }
+        }
 
         #flash {
             position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: white;
-            opacity: 0;
-            z-index: 60;
-            pointer-events: none;
+            inset: 0; background: white;
+            opacity: 0; z-index: 60; pointer-events: none;
         }
-
-        .flash-active { animation: flash-anim 0.7s forwards; }
+        .flash-active { animation: flash-anim 0.8s forwards; }
         @keyframes flash-anim {
-            0% { opacity: 0; }
-            50% { opacity: 1; }
-            100% { opacity: 0; }
+            0% { opacity: 0; } 40% { opacity: 1; } 100% { opacity: 0; }
         }
 
-        /* --- CARTA POKÉMON --- */
+        /* --- CARTA POKÉMON PREMIUM --- */
         #letter-container {
             position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) scale(0);
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%) scale(0) rotate(-10deg);
             z-index: 5;
-            transition: transform 1s ease;
+            transition: transform 1.2s cubic-bezier(0.19, 1, 0.22, 1);
         }
 
-        .show-letter { transform: translate(-50%, -50%) scale(1) !important; }
+        .show-letter { transform: translate(-50%, -50%) scale(1) rotate(0deg) !important; }
 
         .pokemon-card {
-            width: 320px;
-            background: #fdfdfd;
-            border: 12px solid var(--poke-gold);
-            border-radius: 15px;
-            padding: 15px;
-            color: #333;
-            box-shadow: 0 0 40px rgba(255, 203, 5, 0.6);
-            max-height: 80vh;
-            overflow-y: auto;
+            width: 340px;
+            background: linear-gradient(135deg, #ffffff 0%, #e0e0e0 100%);
+            border: 14px solid var(--poke-gold);
+            border-radius: 18px;
+            padding: 20px;
+            color: #1a1a1a;
+            box-shadow: 0 0 50px rgba(255, 203, 5, 0.4), inset 0 0 20px rgba(255,255,255,1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Brillo holográfico */
+        .pokemon-card::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(125deg, transparent 40%, rgba(255,255,255,0.4) 50%, transparent 60%);
+            animation: holo 3s infinite;
+        }
+
+        @keyframes holo {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
         }
 
         .card-header {
             display: flex;
             justify-content: space-between;
-            font-weight: bold;
-            border-bottom: 2px solid #ccc;
-            margin-bottom: 10px;
+            align-items: center;
+            font-weight: 900;
+            border-bottom: 3px solid var(--poke-blue);
+            margin-bottom: 15px;
             padding-bottom: 5px;
+            font-size: 1.1rem;
         }
 
-        .card-text {
-            font-size: 0.95rem;
-            line-height: 1.4;
-            text-align: justify;
+        .card-body {
+            font-size: 1rem;
+            line-height: 1.6;
+            text-align: center;
+            font-weight: 500;
+            background: rgba(255,255,255,0.5);
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid #ccc;
         }
 
-        .hp { color: #d32f2f; }
-        .hidden { display: none; }
+        .hp { color: var(--poke-red); font-size: 1.3rem; }
     </style>
 </head>
 <body>
 
+    <div id="star-field"></div>
+
     <div id="intro-screen">
-        <h1>Gerson te manda un regalo</h1>
+        <div class="intro-text">Gerson te manda un regalo</div>
         <div class="buttons">
-            <button class="btn-yes" onclick="iniciar()">¿Aceptar?</button>
-            <button class="btn-no" onmouseover="huir(this)" ontouchstart="huir(this)">No</button>
+            <button class="btn-yes" onclick="iniciar()">ABRIR REGALO</button>
+            <button class="btn-no" id="btnNo" onmouseover="huir()" ontouchstart="huir()">No</button>
         </div>
     </div>
 
-    <div id="main-stage">
+    <div id="main-stage" style="display: none;">
         <div class="curtain left" id="c-left"></div>
         <div class="curtain right" id="c-right"></div>
 
         <div id="falinks-container">
-            <img src="https://64.media.tumblr.com/96d7889139a2657c4a1049d0323845bf/ba0e263fa9d491ef-11/s540x810/df1fc3ed3da19963c222e93d380bbdf59cff197e.gif" width="250" alt="Falinks">
+            <img src="https://64.media.tumblr.com/96d7889139a2657c4a1049d0323845bf/ba0e263fa9d491ef-11/s540x810/df1fc3ed3da19963c222e93d380bbdf59cff197e.gif" width="280">
         </div>
 
         <div id="flash"></div>
@@ -185,20 +208,22 @@
         <div id="letter-container">
             <div class="pokemon-card">
                 <div class="card-header">
-                    <span>Morsita & osito</span>
-                    <span class="hp">∞ HP</span>
+                    <span>Morsita & Cerdito ❤️</span>
+                    <span class="hp"><small>HP</small> ∞</span>
                 </div>
-                <div class="card-text">
-                    <p><strong>Hola Daniel,</strong> soy yo morsita el chocoreto, la Morsita.</p>
-                    <p>Nuestro fin de semana fue hermoso, es perfecto como nosotros. Quizás algunas veces me tardo en procesar algunas cositas y decirlo pero al final comprendo todo y entiendo el por qué de mis sentimientos.</p>
-                    <p>Hablo del corazón cada que te veo y a veces sueno medio tonto, en realidad somos hermosos. Quiero construir contigo un millón de sueños, caminar juntos por la cuerda floja, para saber y decir "este soy yo", para saber que somos un gran show, que juntos podremos reescribirlo en las estrellas, y nunca tener suficiente, y ser hermosos ahora, ser un cielo lleno de estrellas juntos.</p>
+                <div class="card-body">
+                    <p>Hola Daniel, soy yo cerdito el chocoreto, la Morsita. Nuestro fin de semana fue hermoso, es perfecto como nosotros.</p>
+                    <p>Quizás a veces me tardo en procesar algunas cositas, pero al final comprendo todo y entiendo mis sentimientos. Hablo del corazón cada que te veo.</p>
+                    <p><strong>Queremos reescribir las estrellas juntas y ser un cielo lleno de estrellas juntos. ✨</strong></p>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        function huir(btn) {
+        // Función para mover el botón "No"
+        function huir() {
+            const btn = document.getElementById('btnNo');
             const x = Math.random() * (window.innerWidth - btn.offsetWidth);
             const y = Math.random() * (window.innerHeight - btn.offsetHeight);
             btn.style.left = x + "px";
@@ -206,34 +231,35 @@
         }
 
         function iniciar() {
-            // Ocultar pantalla inicial
-            document.getElementById('intro-screen').style.display = 'none';
-            document.getElementById('main-stage').style.display = 'block';
-
-            // 1. Abrir Telones
+            document.getElementById('intro-screen').style.opacity = '0';
             setTimeout(() => {
-                document.getElementById('c-left').classList.add('open-left');
-                document.getElementById('c-right').classList.add('open-right');
+                document.getElementById('intro-screen').style.display = 'none';
+                document.getElementById('main-stage').style.display = 'block';
                 
-                // 2. Aparece Falinks
-                setTimeout(secuenciaPokemon, 1200);
-            }, 100);
+                // Abrir telones
+                setTimeout(() => {
+                    document.getElementById('c-left').classList.add('open-left');
+                    document.getElementById('c-right').classList.add('open-right');
+                    setTimeout(secuenciaPokemon, 1500);
+                }, 100);
+            }, 1000);
         }
 
         function secuenciaPokemon() {
             const falinks = document.getElementById('falinks-container');
             falinks.classList.add('falinks-appear');
 
-            // 3. Explosión
+            // Efecto de carga antes de la explosión
             setTimeout(() => {
+                document.body.classList.add('shake');
                 document.getElementById('flash').classList.add('flash-active');
                 
-                // 4. Cambiar Falinks por la Carta
                 setTimeout(() => {
                     falinks.style.display = 'none';
+                    document.body.classList.remove('shake');
                     document.getElementById('letter-container').classList.add('show-letter');
                 }, 300);
-            }, 2000);
+            }, 2500);
         }
     </script>
 </body>
