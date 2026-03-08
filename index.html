@@ -48,6 +48,8 @@
             text-transform: uppercase;
             text-shadow: 0 0 10px var(--poke-gold);
             margin-bottom: 40px;
+            text-align: center;
+            padding: 0 20px;
         }
 
         .btn-yes {
@@ -62,8 +64,6 @@
             box-shadow: 0 0 25px var(--poke-red);
             transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
-
-        .btn-yes:hover { transform: scale(1.1); }
 
         .btn-no {
             position: absolute;
@@ -90,7 +90,7 @@
         .open-left { transform: translateX(-100%); }
         .open-right { transform: translateX(100%); }
 
-        /* --- FALINKS Y ANIMACIÓN DE IMPACTO --- */
+        /* --- FALINKS Y ANIMACIÓN --- */
         #falinks-container {
             position: absolute;
             top: 55%; left: 50%;
@@ -112,8 +112,7 @@
         }
 
         #flash {
-            position: fixed;
-            inset: 0; background: white;
+            position: fixed; inset: 0; background: white;
             opacity: 0; z-index: 60; pointer-events: none;
         }
         .flash-active { animation: flash-anim 0.8s forwards; }
@@ -121,7 +120,7 @@
             0% { opacity: 0; } 40% { opacity: 1; } 100% { opacity: 0; }
         }
 
-        /* --- CARTA POKÉMON PREMIUM --- */
+        /* --- CARTA POKÉMON --- */
         #letter-container {
             position: absolute;
             top: 50%; left: 50%;
@@ -133,29 +132,15 @@
         .show-letter { transform: translate(-50%, -50%) scale(1) rotate(0deg) !important; }
 
         .pokemon-card {
-            width: 340px;
-            background: linear-gradient(135deg, #ffffff 0%, #e0e0e0 100%);
-            border: 14px solid var(--poke-gold);
+            width: 320px;
+            background: linear-gradient(135deg, #ffffff 0%, #f0f0f0 100%);
+            border: 12px solid var(--poke-gold);
             border-radius: 18px;
             padding: 20px;
             color: #1a1a1a;
-            box-shadow: 0 0 50px rgba(255, 203, 5, 0.4), inset 0 0 20px rgba(255,255,255,1);
+            box-shadow: 0 0 40px rgba(255, 203, 5, 0.5);
             position: relative;
             overflow: hidden;
-        }
-
-        /* Brillo holográfico */
-        .pokemon-card::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(125deg, transparent 40%, rgba(255,255,255,0.4) 50%, transparent 60%);
-            animation: holo 3s infinite;
-        }
-
-        @keyframes holo {
-            0% { transform: translateX(-100%); }
-            100% { transform: translateX(100%); }
         }
 
         .card-header {
@@ -163,24 +148,19 @@
             justify-content: space-between;
             align-items: center;
             font-weight: 900;
-            border-bottom: 3px solid var(--poke-blue);
+            border-bottom: 2px solid #3b4cca;
             margin-bottom: 15px;
             padding-bottom: 5px;
-            font-size: 1.1rem;
         }
 
         .card-body {
-            font-size: 1rem;
-            line-height: 1.6;
-            text-align: center;
-            font-weight: 500;
-            background: rgba(255,255,255,0.5);
-            padding: 15px;
-            border-radius: 10px;
-            border: 1px solid #ccc;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            text-align: left;
         }
 
-        .hp { color: var(--poke-red); font-size: 1.3rem; }
+        .hp { color: var(--poke-red); font-size: 1.2rem; }
+        strong { color: #000; font-weight: 800; }
     </style>
 </head>
 <body>
@@ -188,9 +168,9 @@
     <div id="star-field"></div>
 
     <div id="intro-screen">
-        <div class="intro-text">Gerson te manda un regalo</div>
+        <div class="intro-text">gerson te manda un regalo</div>
         <div class="buttons">
-            <button class="btn-yes" onclick="iniciar()">ABRIR REGALO</button>
+            <button class="btn-yes" onclick="iniciar()">SÍ</button>
             <button class="btn-no" id="btnNo" onmouseover="huir()" ontouchstart="huir()">No</button>
         </div>
     </div>
@@ -208,20 +188,19 @@
         <div id="letter-container">
             <div class="pokemon-card">
                 <div class="card-header">
-                    <span>Morsita & osito ❤️</span>
+                    <span>Daniel & Gersito ❤️</span>
                     <span class="hp"><small>HP</small> ∞</span>
                 </div>
                 <div class="card-body">
-                    <p>Hola Daniel, soy yo gersito el chocoreto, la Morsita. Nuestro fin de semana fue hermoso, es perfecto como nosotros.</p>
-                    <p>Quizás a veces me tardo en procesar algunas cositas, pero al final comprendo todo y entiendo mis sentimientos. Hablo del corazón cada que te veo.</p>
-                    <p><strong>Queremos reescribir las estrellas juntas y ser un cielo lleno de estrellas juntos. ✨</strong></p>
+                    <p>Hola Daniel, soy yo <strong>gersito el chocoreto, la Morsita</strong>.</p>
+                    <p>Nuestro fin de semana fue hermoso; es perfecto como nosotros. Quizás algunas veces me tardo en procesar algunas cositas y decirlo, pero al final comprendo todo y entiendo el porqué de mis sentimientos.</p> 
+                    <p>Hablo del corazón cada que te veo y a veces sueno medio tonto; en realidad somos hermosos. Quiero construir contigo un millón de sueños, caminar juntos por la cuerda floja para saber y decir "este soy yo", para saber que somos un gran show, que juntos podremos reescribir las estrellas y nunca tener suficiente, y ser hermosos ahora, ser un cielo lleno de estrellas juntos.</p>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        // Función para mover el botón "No"
         function huir() {
             const btn = document.getElementById('btnNo');
             const x = Math.random() * (window.innerWidth - btn.offsetWidth);
@@ -235,8 +214,6 @@
             setTimeout(() => {
                 document.getElementById('intro-screen').style.display = 'none';
                 document.getElementById('main-stage').style.display = 'block';
-                
-                // Abrir telones
                 setTimeout(() => {
                     document.getElementById('c-left').classList.add('open-left');
                     document.getElementById('c-right').classList.add('open-right');
@@ -248,12 +225,9 @@
         function secuenciaPokemon() {
             const falinks = document.getElementById('falinks-container');
             falinks.classList.add('falinks-appear');
-
-            // Efecto de carga antes de la explosión
             setTimeout(() => {
                 document.body.classList.add('shake');
                 document.getElementById('flash').classList.add('flash-active');
-                
                 setTimeout(() => {
                     falinks.style.display = 'none';
                     document.body.classList.remove('shake');
