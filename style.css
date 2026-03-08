@@ -1,0 +1,76 @@
+:root {
+    --poke-red: #ff0000;
+    --poke-gold: #ffcb05;
+    --dark: #000;
+}
+
+body, html {
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    overflow: hidden;
+    background-color: var(--dark);
+    color: white;
+}
+
+/* Pantalla de Inicio */
+.screen {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    transition: opacity 1s ease;
+}
+
+.btn-yes {
+    padding: 15px 30px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    background: var(--poke-red);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    box-shadow: 0 0 15px var(--poke-red);
+}
+
+.btn-no {
+    position: absolute; /* Para que se mueva */
+    padding: 10px 20px;
+    border-radius: 20px;
+    cursor: not-allowed;
+}
+
+/* Telones */
+.curtain {
+    position: fixed;
+    top: 0;
+    width: 50%;
+    height: 100%;
+    background: #8B0000;
+    z-index: 10;
+    transition: transform 2s ease-in-out;
+}
+.curtain.left { left: 0; border-right: 5px solid gold; }
+.curtain.right { right: 0; border-left: 5px solid gold; }
+
+.open-curtain.left { transform: translateX(-100%); }
+.open-curtain.right { transform: translateX(100%); }
+
+/* La Carta Pokémon */
+.pokemon-card {
+    width: 350px;
+    background: linear-gradient(135deg, #f3e5f5, #e1f5fe);
+    border: 12px solid var(--poke-gold);
+    border-radius: 15px;
+    padding: 20px;
+    color: #333;
+    box-shadow: 0 0 30px rgba(255, 203, 5, 0.5);
+    transform: scale(0);
+    transition: transform 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.show-card { transform: scale(1) rotate(2deg); }
+
+.hidden { display: none !important; }
