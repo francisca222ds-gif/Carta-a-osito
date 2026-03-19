@@ -2,8 +2,9 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Corazón 3D Real - The Coding Wizard Style</title>
+    <title>Corazón Infinito Original</title>
     <style>
+        /* Base del escenario */
         body {
             background-color: #000;
             margin: 0;
@@ -12,54 +13,50 @@
             justify-content: center;
             align-items: center;
             overflow: hidden;
-            perspective: 1200px; /* Profundidad del túnel */
+            perspective: 1000px;
         }
 
         #ui {
             position: relative;
             transform-style: preserve-3d;
-            /* Inclinación para que se vea como en el video */
-            transform: rotateX(15deg) rotateY(0deg);
         }
 
-        .love_horizontal {
-            position: absolute;
-            transform-style: preserve-3d;
-            /* La animación de tu imagen original */
-            animation: tunnel 8000ms infinite linear;
-            animation-delay: calc(var(--i) * -150ms);
-            opacity: 0;
-        }
-
-        .love_word {
-            display: block;
+        /* --- TU CSS ORIGINAL EMPIEZA AQUÍ --- */
+        #ui .love_word {
             color: #ea80b0;
             font-size: 1.4rem;
-            font-family: 'Arial', sans-serif;
-            font-weight: bold;
-            /* Inclinación y sombra de tu captura */
+            /* Respetamos tu transform original */
             transform: translateY(-100%) rotateZ(-30deg);
-            text-shadow: 0 0 10px #fff, 0 0 20px #ea80b0;
-            white-space: nowrap;
+            text-shadow: 0 0 10px #fff;
             letter-spacing: 2px;
+            white-space: nowrap;
+            font-family: Arial, sans-serif;
+            font-weight: bold;
         }
 
-        /* ESTO CREA EL EFECTO DEL VIDEO */
-        @keyframes tunnel {
+        #ui .love_horizontal {
+            position: absolute;
+            transform-style: preserve-3d;
+            /* Usamos tu animación de 10000ms */
+            animation: horizontal 10000ms infinite alternate ease-in-out;
+            /* Usamos tu cálculo exacto de delay */
+            animation-delay: calc(var(--i) * -300ms);
+        }
+        /* --- TU CSS ORIGINAL TERMINA AQUÍ --- */
+
+        /* La animación que faltaba para crear el túnel 3D */
+        @keyframes horizontal {
             0% {
-                /* Empieza al fondo, muy pequeño y en su posición del borde del corazón */
-                transform: translate(calc(var(--x) * 0.1), calc(var(--y) * 0.1)) translateZ(-1200px) scale(0);
+                /* Nacen en el fondo formando el corazón pequeño */
+                transform: translate(calc(var(--x) * 0.15), calc(var(--y) * 0.15)) translateZ(-1000px) scale(0);
                 opacity: 0;
             }
-            10% {
-                opacity: 1;
-            }
-            90% {
+            50% {
                 opacity: 1;
             }
             100% {
-                /* Viaja hacia la cámara expandiéndose a su posición real */
-                transform: translate(var(--x), var(--y)) translateZ(600px) scale(1.5);
+                /* Viajan hacia ti expandiéndose a su posición real */
+                transform: translate(var(--x), var(--y)) translateZ(500px) scale(1.5);
                 opacity: 0;
             }
         }
@@ -67,22 +64,22 @@
 </head>
 <body>
 
-    <div id="ui"></div>
+    <div id="ui">
+        </div>
 
     <script>
         const ui = document.getElementById('ui');
-        const totalLineas = 150; // Aumenté a 150 para que el corazón sea sólido
+        const total = 120; // Cantidad de frases
 
-        for (let i = 1; i <= totalLineas; i++) {
+        for (let i = 1; i <= total; i++) {
             const div = document.createElement('div');
             div.className = 'love_horizontal';
             div.style.setProperty('--i', i);
 
-            // FÓRMULA MATEMÁTICA DEL CORAZÓN (Ajustada para que no sea una línea)
-            const t = (i / totalLineas) * 2 * Math.PI;
-            const escala = 18; // Tamaño del corazón
+            // Coordenadas para que el túnel tenga forma de corazón
+            const t = (i / total) * 2 * Math.PI;
+            const escala = 18; 
             
-            // Estas coordenadas definen cada punto del borde
             const x = 16 * Math.pow(Math.sin(t), 3) * escala;
             const y = -(13 * Math.cos(t) - 5 * Math.cos(2*t) - 2 * Math.cos(3*t) - Math.cos(4*t)) * escala;
 
