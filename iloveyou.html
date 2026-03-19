@@ -2,10 +2,8 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Corazón Infinito CSS</title>
+    <title>Corazón de Código Perfecto</title>
     <style>
-        /* Fondo y contenedor principal */
         body {
             background-color: #000;
             margin: 0;
@@ -14,79 +12,69 @@
             justify-content: center;
             align-items: center;
             overflow: hidden;
-            perspective: 1000px; /* Profundidad 3D */
+            font-family: Arial, sans-serif;
         }
 
         #ui {
             position: relative;
-            transform-style: preserve-3d;
-            /* Inclinación inicial para ver el efecto de volumen */
-            transform: rotateX(-10deg) rotateY(-10deg);
-        }
-
-        /* Estilos exactos de tu imagen */
-        .love_word {
-            display: block;
-            color: #ea80b0;
-            font-size: 1.4rem;
-            font-family: 'Arial', sans-serif;
-            font-weight: bold;
-            /* Inclinación de las letras según tu captura */
-            transform: translateY(-100%) rotateZ(-30deg);
-            text-shadow: 0 0 10px #fff, 0 0 20px #ea80b0;
-            white-space: nowrap;
-            letter-spacing: 2px;
-            opacity: 0.8;
+            /* Perspectiva para que se vea profundo como la foto */
+            perspective: 600px;
         }
 
         .love_horizontal {
             position: absolute;
             transform-style: preserve-3d;
-            /* El centro de rotación debe ser el centro del contenedor */
-            transform-origin: center;
-            
-            /* Animación y el cálculo de delay de tu imagen */
-            animation: horizontal 8000ms infinite alternate ease-in-out;
-            animation-delay: calc(var(--i) * -200ms);
+            /* Aquí aplicamos tu delay */
+            animation: move 5000ms infinite alternate ease-in-out;
+            animation-delay: calc(var(--i) * -300ms);
         }
 
-        /* La magia: Para que sea un corazón, necesitamos moverlo en 3D */
-        @keyframes horizontal {
-            0% {
-                transform: rotateY(0deg) rotateX(0deg) scale(0.8);
-            }
-            100% {
-                /* El cruce de estas rotaciones forma la silueta del corazón */
-                transform: rotateY(360deg) rotateX(360deg) scale(1.2);
-            }
+        .love_word {
+            display: block;
+            color: #ea80b0;
+            font-size: 1rem;
+            font-weight: bold;
+            /* Inclinación exacta de tu imagen */
+            transform: translateY(-100%) rotateZ(-30deg);
+            text-shadow: 0 0 8px #fff, 0 0 15px #ea80b0;
+            white-space: nowrap;
+            opacity: 0.8;
         }
 
-        /* Color alterno para dar más profundidad */
-        .love_horizontal:nth-child(2n) .love_word {
-            color: #ffb1d8;
-            filter: brightness(1.2);
+        @keyframes move {
+            0% { transform: translate(var(--x), var(--y)) scale(0.8) rotateY(0deg); }
+            100% { transform: translate(var(--x), var(--y)) scale(1.1) rotateY(20deg); }
         }
     </style>
 </head>
 <body>
 
-    <div id="ui">
-        </div>
+    <div id="ui"></div>
 
     <script>
         const ui = document.getElementById('ui');
-        const totalLineas = 100; // Más líneas = corazón más definido
+        const totalLineas = 150; // Más líneas para que el corazón se vea sólido
 
         for (let i = 1; i <= totalLineas; i++) {
             const div = document.createElement('div');
             div.className = 'love_horizontal';
-            
-            // Seteamos la variable --i que pide tu CSS
             div.style.setProperty('--i', i);
+
+            // FÓRMULA MATEMÁTICA DEL CORAZÓN (Paramétrica)
+            const t = (i / totalLineas) * 2 * Math.PI;
+            // Escala de tamaño del corazón
+            const scale = 15; 
             
-            // El texto que se repetirá
-            div.innerHTML = `<span class="love_word">I love you I love you I love you</span>`;
+            // Ecuaciones: 
+            // x = 16 * sin^3(t)
+            // y = 13 * cos(t) - 5 * cos(2t) - 2 * cos(3t) - cos(4t)
+            const x = 16 * Math.pow(Math.sin(t), 3) * scale;
+            const y = -(13 * Math.cos(t) - 5 * Math.cos(2*t) - 2 * Math.cos(3*t) - Math.cos(4*t)) * scale;
+
+            div.style.setProperty('--x', `${x}px`);
+            div.style.setProperty('--y', `${y}px`);
             
+            div.innerHTML = `<span class="love_word">I love you</span>`;
             ui.appendChild(div);
         }
     </script>
