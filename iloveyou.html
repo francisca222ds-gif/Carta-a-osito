@@ -1,11 +1,88 @@
-<div id="ui">
-  <div class="love_horizontal" style="--i:1">
-    <span class="love_word">I love you I love you I love you</span>
-  </div>
-  <div class="love_horizontal" style="--i:2">
-    <span class="love_word">I love you I love you I love you</span>
-  </div>
-  <div class="love_horizontal" style="--i:3">
-    <span class="love_word">I love you I love you I love you</span>
-  </div>
-  </div>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Corazón de Código</title>
+    <style>
+        /* Estilos base para el fondo */
+        body {
+            background-color: #050505;
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            perspective: 1000px; /* Necesario para el efecto 3D */
+        }
+
+        #ui {
+            position: relative;
+            transform-style: preserve-3d;
+        }
+
+        /* El CSS de tu imagen */
+        .love_word {
+            color: #ea80b0;
+            font-size: 1.4rem;
+            /* Inclinación de las letras */
+            transform: translateY(-100%) rotateZ(-30deg);
+            text-shadow: 0 0 10px #fff;
+            letter-spacing: 2px;
+            white-space: nowrap;
+            font-family: 'Arial', sans-serif;
+            font-weight: bold;
+        }
+
+        .love_horizontal {
+            position: absolute;
+            /* Aplicamos la animación y el retraso de tu imagen */
+            animation: horizontal 10000ms infinite alternate ease-in-out;
+            animation-delay: calc(var(--i) * -300ms);
+            transform-style: preserve-3d;
+        }
+
+        /* La animación que genera la forma del corazón */
+        @keyframes horizontal {
+            0% {
+                transform: rotateY(0deg) translateZ(50px) rotateX(0deg);
+            }
+            100% {
+                /* El giro en varios ejes crea la ilusión del corazón */
+                transform: rotateY(360deg) translateZ(180px) rotateX(360deg);
+            }
+        }
+
+        /* Ajuste para que no se vea una línea plana */
+        .love_horizontal:nth-child(even) .love_word {
+            color: #ffb1d8;
+            opacity: 0.7;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="id_container">
+        <div id="ui">
+            </div>
+    </div>
+
+    <script>
+        const container = document.getElementById('ui');
+        const cantidadDeLineas = 60; // Cuantas más líneas, más denso el corazón
+
+        for (let i = 1; i <= cantidadDeLineas; i++) {
+            const div = document.createElement('div');
+            div.className = 'love_horizontal';
+            
+            // Aquí asignamos la variable --i que el CSS usa para el delay
+            div.style.setProperty('--i', i);
+            
+            // Insertamos el texto
+            div.innerHTML = `<span class="love_word">I love you I love you</span>`;
+            
+            container.appendChild(div);
+        }
+    </script>
+</body>
+</html>
