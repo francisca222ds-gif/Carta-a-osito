@@ -1,0 +1,34 @@
+body {
+  background: #000; /* Fondo negro para que resalte */
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+#ui .love_word {
+  color: #ea80b0;
+  font-size: 1.4rem;
+  transform: translateY(-100%) rotateZ(-30deg);
+  text-shadow: 0 0 10px #fff;
+  letter-spacing: 2px;
+  white-space: nowrap;
+  font-family: Arial, sans-serif;
+}
+
+#ui .love_horizontal {
+  position: absolute; /* Para que todos se encimen y se muevan desde el centro */
+  animation: horizontal 10000ms infinite alternate ease-in-out;
+  animation-delay: calc(var(--i) * -300ms);
+}
+
+/* Esta es la parte mágica que faltaba */
+@keyframes horizontal {
+  0% {
+    transform: translateX(-50%) rotate(0deg);
+  }
+  100% {
+    transform: translateX(50%) rotate(360deg);
+  }
+}
