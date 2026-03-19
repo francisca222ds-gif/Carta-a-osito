@@ -2,83 +2,50 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CreateJS - Mensaje de Amor</title>
+    <title>CreateJS Demo</title>
     <script src="https://code.createjs.com/1.0.0/createjs.min.js"></script>
     <style>
-        /* Estilos para que el canvas ocupe toda la pantalla */
-        body, html {
-            margin: 0;
-            padding: 0;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            background-color: #000; /* Fondo negro como en la imagen */
-        }
-        canvas {
-            display: block;
-        }
+        body { margin: 0; background-color: #000; overflow: hidden; }
+        canvas { display: block; }
     </style>
 </head>
 <body onload="init();">
-
     <canvas id="demoCanvas"></canvas>
 
     <script>
         var stage, w, h;
-        var captureContainers = [];
+        var captureContainers = []; // Arreglo para guardar los contenedores
 
         function init() {
-            // 1. Inicializar el Stage (Escenario)
+            // 1. Configurar el escenario
             var canvas = document.getElementById("demoCanvas");
             stage = new createjs.Stage(canvas);
 
-            // Obtener dimensiones de la ventana
+            // Ajustar el canvas al tamaño de la ventana
             w = window.innerWidth;
             h = window.innerHeight;
             canvas.width = w;
             canvas.height = h;
 
-            // 2. Crear el texto (El código de tu imagen)
-            // Cambié el color a blanco (#FFF) para que resalte sobre el negro
+            // 2. El código de tu imagen
             var text = new createjs.Text(
-                "the longer I'm with you the more I love you", 
-                "bold 24px Arial", 
-                "#FFFFFF" 
+                "the longer I'm with you the more I love you",
+                "bold 24px Arial",
+                "#FF69B4" // Cambié el color a rosa para que se vea sobre negro
             );
-            
             text.textAlign = "center";
             text.x = w / 2;
             text.y = h / 2 - text.getMeasuredLineHeight();
-            
-            // Añadir el texto al escenario
             stage.addChild(text);
 
-            // 3. El bucle de contenedores de tu imagen
             for (var i = 0; i < 100; i++) {
                 var captureContainer = new createjs.Container();
-                // El método cache ayuda al rendimiento guardando el contenedor como imagen
                 captureContainer.cache(0, 0, w, h);
                 captureContainers.push(captureContainer);
             }
 
-            // 4. Ticker: Es el "corazón" que actualiza la pantalla constantemente
-            createjs.Ticker.timingMode = createjs.Ticker.RAF;
+            // 3. Actualizar el escenario para que se vea algo
             createjs.Ticker.addEventListener("tick", stage);
-
-            // Manejar el cambio de tamaño de ventana
-            window.addEventListener('resize', handleResize);
-        }
-
-        function handleResize() {
-            w = window.innerWidth;
-            h = window.innerHeight;
-            stage.canvas.width = w;
-            stage.canvas.height = h;
-            // Reposicionar el texto si se mueve la ventana
-            stage.getChildAt(0).x = w / 2;
-            stage.getChildAt(0).y = h / 2 - stage.getChildAt(0).getMeasuredLineHeight();
-            stage.update();
         }
     </script>
 </body>
