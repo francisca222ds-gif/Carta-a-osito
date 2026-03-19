@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Corazón 3D Infinito</title>
+    <title>Corazón 3D Real - The Coding Wizard Style</title>
     <style>
         body {
             background-color: #000;
@@ -12,52 +12,54 @@
             justify-content: center;
             align-items: center;
             overflow: hidden;
-            perspective: 1000px; /* Crucial para el efecto de túnel */
+            perspective: 1200px; /* Profundidad del túnel */
         }
 
         #ui {
             position: relative;
             transform-style: preserve-3d;
-            transform: rotateX(10deg); /* Inclinación ligera como el video */
+            /* Inclinación para que se vea como en el video */
+            transform: rotateX(15deg) rotateY(0deg);
         }
 
         .love_horizontal {
             position: absolute;
             transform-style: preserve-3d;
-            /* La animación de tu imagen con el delay */
-            animation: tunnel 10000ms infinite linear;
-            animation-delay: calc(var(--i) * -300ms);
+            /* La animación de tu imagen original */
+            animation: tunnel 8000ms infinite linear;
+            animation-delay: calc(var(--i) * -150ms);
+            opacity: 0;
         }
 
         .love_word {
             display: block;
             color: #ea80b0;
             font-size: 1.4rem;
-            font-family: Arial, sans-serif;
+            font-family: 'Arial', sans-serif;
             font-weight: bold;
-            /* Inclinación exacta de tu captura */
+            /* Inclinación y sombra de tu captura */
             transform: translateY(-100%) rotateZ(-30deg);
-            text-shadow: 0 0 10px #fff;
+            text-shadow: 0 0 10px #fff, 0 0 20px #ea80b0;
             white-space: nowrap;
             letter-spacing: 2px;
         }
 
-        /* ANIMACIÓN DE TÚNEL HACIA ADELANTE */
+        /* ESTO CREA EL EFECTO DEL VIDEO */
         @keyframes tunnel {
             0% {
-                /* Empieza lejos y pequeño (fondo del túnel) */
-                transform: translate(var(--x), var(--y)) translateZ(-1000px) scale(0);
+                /* Empieza al fondo, muy pequeño y en su posición del borde del corazón */
+                transform: translate(calc(var(--x) * 0.1), calc(var(--y) * 0.1)) translateZ(-1200px) scale(0);
                 opacity: 0;
             }
-            20% {
+            10% {
                 opacity: 1;
             }
-            80% {
+            90% {
                 opacity: 1;
             }
             100% {
-                /* Viene hacia la cámara y se agranda */
-                transform: translate(var(--x), var(--y)) translateZ(500px) scale(1.5);
+                /* Viaja hacia la cámara expandiéndose a su posición real */
+                transform: translate(var(--x), var(--y)) translateZ(600px) scale(1.5);
                 opacity: 0;
             }
         }
@@ -69,17 +71,18 @@
 
     <script>
         const ui = document.getElementById('ui');
-        const totalLineas = 100;
+        const totalLineas = 150; // Aumenté a 150 para que el corazón sea sólido
 
         for (let i = 1; i <= totalLineas; i++) {
             const div = document.createElement('div');
             div.className = 'love_horizontal';
             div.style.setProperty('--i', i);
 
-            // Coordenadas fijas para que todas las líneas formen la silueta
+            // FÓRMULA MATEMÁTICA DEL CORAZÓN (Ajustada para que no sea una línea)
             const t = (i / totalLineas) * 2 * Math.PI;
-            const escala = 18; 
+            const escala = 18; // Tamaño del corazón
             
+            // Estas coordenadas definen cada punto del borde
             const x = 16 * Math.pow(Math.sin(t), 3) * escala;
             const y = -(13 * Math.cos(t) - 5 * Math.cos(2*t) - 2 * Math.cos(3*t) - Math.cos(4*t)) * escala;
 
