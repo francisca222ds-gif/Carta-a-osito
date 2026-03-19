@@ -2,86 +2,92 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Corazón de Código</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Corazón Infinito CSS</title>
     <style>
-        /* Estilos base para el fondo */
+        /* Fondo y contenedor principal */
         body {
-            background-color: #050505;
+            background-color: #000;
             margin: 0;
             height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
             overflow: hidden;
-            perspective: 1000px; /* Necesario para el efecto 3D */
+            perspective: 1000px; /* Profundidad 3D */
         }
 
         #ui {
             position: relative;
             transform-style: preserve-3d;
+            /* Inclinación inicial para ver el efecto de volumen */
+            transform: rotateX(-10deg) rotateY(-10deg);
         }
 
-        /* El CSS de tu imagen */
+        /* Estilos exactos de tu imagen */
         .love_word {
+            display: block;
             color: #ea80b0;
             font-size: 1.4rem;
-            /* Inclinación de las letras */
-            transform: translateY(-100%) rotateZ(-30deg);
-            text-shadow: 0 0 10px #fff;
-            letter-spacing: 2px;
-            white-space: nowrap;
             font-family: 'Arial', sans-serif;
             font-weight: bold;
+            /* Inclinación de las letras según tu captura */
+            transform: translateY(-100%) rotateZ(-30deg);
+            text-shadow: 0 0 10px #fff, 0 0 20px #ea80b0;
+            white-space: nowrap;
+            letter-spacing: 2px;
+            opacity: 0.8;
         }
 
         .love_horizontal {
             position: absolute;
-            /* Aplicamos la animación y el retraso de tu imagen */
-            animation: horizontal 10000ms infinite alternate ease-in-out;
-            animation-delay: calc(var(--i) * -300ms);
             transform-style: preserve-3d;
+            /* El centro de rotación debe ser el centro del contenedor */
+            transform-origin: center;
+            
+            /* Animación y el cálculo de delay de tu imagen */
+            animation: horizontal 8000ms infinite alternate ease-in-out;
+            animation-delay: calc(var(--i) * -200ms);
         }
 
-        /* La animación que genera la forma del corazón */
+        /* La magia: Para que sea un corazón, necesitamos moverlo en 3D */
         @keyframes horizontal {
             0% {
-                transform: rotateY(0deg) translateZ(50px) rotateX(0deg);
+                transform: rotateY(0deg) rotateX(0deg) scale(0.8);
             }
             100% {
-                /* El giro en varios ejes crea la ilusión del corazón */
-                transform: rotateY(360deg) translateZ(180px) rotateX(360deg);
+                /* El cruce de estas rotaciones forma la silueta del corazón */
+                transform: rotateY(360deg) rotateX(360deg) scale(1.2);
             }
         }
 
-        /* Ajuste para que no se vea una línea plana */
-        .love_horizontal:nth-child(even) .love_word {
+        /* Color alterno para dar más profundidad */
+        .love_horizontal:nth-child(2n) .love_word {
             color: #ffb1d8;
-            opacity: 0.7;
+            filter: brightness(1.2);
         }
     </style>
 </head>
 <body>
 
-    <div id="id_container">
-        <div id="ui">
-            </div>
-    </div>
+    <div id="ui">
+        </div>
 
     <script>
-        const container = document.getElementById('ui');
-        const cantidadDeLineas = 60; // Cuantas más líneas, más denso el corazón
+        const ui = document.getElementById('ui');
+        const totalLineas = 100; // Más líneas = corazón más definido
 
-        for (let i = 1; i <= cantidadDeLineas; i++) {
+        for (let i = 1; i <= totalLineas; i++) {
             const div = document.createElement('div');
             div.className = 'love_horizontal';
             
-            // Aquí asignamos la variable --i que el CSS usa para el delay
+            // Seteamos la variable --i que pide tu CSS
             div.style.setProperty('--i', i);
             
-            // Insertamos el texto
-            div.innerHTML = `<span class="love_word">I love you I love you</span>`;
+            // El texto que se repetirá
+            div.innerHTML = `<span class="love_word">I love you I love you I love you</span>`;
             
-            container.appendChild(div);
+            ui.appendChild(div);
         }
     </script>
 </body>
