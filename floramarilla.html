@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Flores Amarillas para el Amor de mi Vida</title>
+    <title>Flores Amarillas</title>
     <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -33,7 +33,6 @@
             text-align: center;
         }
 
-        /* --- FLOR INICIAL DETALLADA --- */
         .initial-stage {
             position: absolute;
             top: 50%;
@@ -83,7 +82,6 @@
             color: var(--text-color);
         }
 
-        /* --- ANIMACIÓN DE CAÍDA --- */
         .falling-seed {
             position: absolute;
             width: 15px;
@@ -105,7 +103,6 @@
             transition: width 1s ease;
         }
 
-        /* --- ÁRBOL REALISTA --- */
         .tree-svg {
             position: absolute;
             bottom: 120px;
@@ -134,7 +131,6 @@
             transform-origin: center;
         }
 
-        /* --- CONTADOR --- */
         .counter-section {
             position: absolute;
             bottom: 20px;
@@ -151,12 +147,10 @@
             letter-spacing: 1px;
         }
 
-        /* Animaciones */
         @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
         @keyframes drop { to { top: calc(100% - 135px); } }
         @keyframes grow { to { stroke-dashoffset: 0; } }
         @keyframes bloom { to { opacity: 1; transform: scale(1); } }
-
     </style>
 </head>
 <body>
@@ -165,7 +159,7 @@
         <div class="initial-stage" id="start-node">
             <div class="sunflower" id="sunflower-ui">
                 <div class="center"></div>
-                </div>
+            </div>
             <span class="flower-label">Flores para ti ✨</span>
         </div>
 
@@ -185,7 +179,6 @@
     </div>
 
     <script>
-        // Generar pétalos de la flor inicial
         const sunflower = document.getElementById('sunflower-ui');
         for (let i = 0; i < 12; i++) {
             const p = document.createElement('div');
@@ -203,27 +196,20 @@
         const stats = document.getElementById('stats');
 
         startNode.addEventListener('click', () => {
-            // Desaparecer flor inicial
             startNode.style.opacity = '0';
             setTimeout(() => {
                 startNode.style.display = 'none';
-                
-                // Mostrar línea de tierra
                 line.style.width = '200px';
-                
-                // Soltar semilla
                 seed.style.display = 'block';
                 seed.style.left = '50%';
                 seed.style.top = '45%';
                 seed.style.animation = 'drop 1.2s cubic-bezier(0.5, 0.05, 1, 0.5) forwards';
             }, 800);
 
-            // Iniciar crecimiento del árbol
             setTimeout(() => {
                 seed.style.display = 'none';
                 treeCanvas.style.display = 'block';
                 trunkPath.style.animation = 'grow 3s ease-out forwards';
-                
                 generateHeartFlowers();
             }, 2200);
         });
@@ -232,7 +218,6 @@
             const total = 100;
             for (let i = 0; i < total; i++) {
                 const t = (i / total) * 2 * Math.PI;
-                // Ecuación de corazón
                 const x = 16 * Math.pow(Math.sin(t), 3);
                 const y = -(13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t));
 
@@ -241,12 +226,10 @@
                 flower.setAttribute("cx", 100 + (x * 3.5));
                 flower.setAttribute("cy", 70 + (y * 3.5));
                 flower.setAttribute("r", Math.random() * 2 + 1.5);
-                
                 flower.style.animation = `bloom 0.8s ease-out ${3 + Math.random() * 2}s forwards`;
                 garden.appendChild(flower);
             }
 
-            // Mostrar contador
             setTimeout(() => {
                 stats.style.opacity = '1';
                 startClock();
@@ -258,14 +241,11 @@
             setInterval(() => {
                 const now = new Date();
                 const d = now - begin;
-                
                 const days = Math.floor(d / 86400000);
                 const hours = Math.floor((d % 86400000) / 3600000);
                 const mins = Math.floor((d % 3600000) / 60000);
                 const secs = Math.floor((d % 60000) / 1000);
-
-                document.getElementById('timer').innerText = 
-                    `${days} días : ${hours}h : ${mins}m : ${secs}s`;
+                document.getElementById('timer').innerText = `${days} días : ${hours}h : ${mins}m : ${secs}s`;
             }, 1000);
         }
     </script>
