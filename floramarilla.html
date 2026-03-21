@@ -3,171 +3,270 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Para Mi Amor ❤️</title>
-    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@400;700&display=swap" rel="stylesheet">
-    
+    <title>Flores Amarillas para el Amor de mi Vida</title>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
     <style>
-        /* --- AQUÍ EMPIEZA EL CSS (EL ESTILO) --- */
+        :root {
+            --bg-color: #fff9f0;
+            --flower-yellow: #ffda00;
+            --flower-center: #3e2723;
+            --trunk-color: #4e342e;
+            --text-color: #5d4037;
+        }
+
         body {
             margin: 0;
-            padding: 0;
+            background-color: var(--bg-color);
             font-family: 'Quicksand', sans-serif;
-            background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 99%, #fad0c4 100%);
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            color: #333;
-            overflow-x: hidden;
+            overflow: hidden;
         }
 
-        .container {
-            background-color: rgba(255, 255, 255, 0.95);
-            padding: 40px;
-            border-radius: 30px;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
-            text-align: center;
-            max-width: 500px;
-            width: 90%;
-            animation: fadeIn 1.5s ease-in-out;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        h1 {
-            font-family: 'Pacifico', cursive;
-            color: #ff4d6d;
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-        }
-
-        /* Dibujo del Árbol */
-        .tree-canvas {
+        #main-container {
             position: relative;
-            width: 200px;
-            height: 250px;
-            margin: 20px auto;
+            width: 100%;
+            max-width: 600px;
+            height: 80vh;
+            text-align: center;
         }
 
-        .trunk {
-            width: 16px;
-            height: 80px;
-            background: #5d4037;
+        /* --- FLOR INICIAL DETALLADA --- */
+        .initial-stage {
             position: absolute;
-            bottom: 0;
+            top: 50%;
             left: 50%;
-            transform: translateX(-50%);
-            border-radius: 4px;
-            animation: growTrunk 2s ease-out forwards;
+            transform: translate(-50%, -50%);
+            cursor: pointer;
+            z-index: 10;
+            transition: all 0.8s ease;
         }
 
-        .flower {
+        .sunflower {
+            width: 120px;
+            height: 120px;
+            position: relative;
+            animation: rotate 20s linear infinite;
+        }
+
+        .petal {
+            position: absolute;
+            background: #ffeb3b;
+            width: 40px;
+            height: 70px;
+            border-radius: 50% 50% 10% 10%;
+            left: 40px;
+            top: -20px;
+            transform-origin: bottom center;
+            border: 1px solid #fbc02d;
+        }
+
+        .center {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            background: radial-gradient(circle, #5d4037, #3e2723);
+            border-radius: 50%;
+            top: 35px;
+            left: 35px;
+            z-index: 2;
+            box-shadow: inset 0 0 10px #000;
+        }
+
+        .flower-label {
+            display: block;
+            margin-top: 20px;
+            font-family: 'Pacifico', cursive;
+            font-size: 1.8rem;
+            color: var(--text-color);
+        }
+
+        /* --- ANIMACIÓN DE CAÍDA --- */
+        .falling-seed {
             position: absolute;
             width: 15px;
             height: 15px;
-            background: #ffcc00; /* Color amarillo */
+            background: #3e2723;
             border-radius: 50%;
-            box-shadow: 0 0 8px #ffeb3b;
+            display: none;
+            z-index: 5;
+        }
+
+        .ground-line {
+            position: absolute;
+            bottom: 120px;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: #a1887f;
+            transform: translateX(-50%);
+            transition: width 1s ease;
+        }
+
+        /* --- ÁRBOL REALISTA --- */
+        .tree-svg {
+            position: absolute;
+            bottom: 120px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 400px;
+            height: 450px;
+            display: none;
+        }
+
+        .trunk {
+            fill: none;
+            stroke: var(--trunk-color);
+            stroke-width: 12;
+            stroke-linecap: round;
+            stroke-dasharray: 1000;
+            stroke-dashoffset: 1000;
+        }
+
+        .mini-flower {
+            fill: var(--flower-yellow);
+            stroke: #fbc02d;
+            stroke-width: 0.5;
             opacity: 0;
-            animation: bloom 1s ease-out forwards;
+            transform: scale(0);
+            transform-origin: center;
         }
 
-        @keyframes growTrunk {
-            from { height: 0; }
-            to { height: 80px; }
-        }
-
-        @keyframes bloom {
-            to { opacity: 1; transform: scale(1.2); }
-        }
-
-        /* Contador */
-        .timer-box {
-            background: #fff0f3;
-            padding: 20px;
-            border-radius: 15px;
-            margin-top: 20px;
-            border: 2px dashed #ff4d6d;
+        /* --- CONTADOR --- */
+        .counter-section {
+            position: absolute;
+            bottom: 20px;
+            width: 100%;
+            opacity: 0;
+            transition: opacity 1.5s ease;
+            color: var(--text-color);
         }
 
         #timer {
             font-size: 1.2rem;
-            font-weight: bold;
-            color: #c9184a;
-            line-height: 1.6;
+            font-weight: 600;
+            margin-top: 8px;
+            letter-spacing: 1px;
         }
 
-        .heart {
-            color: #ff4d6d;
-            display: inline-block;
-            animation: beat .3s infinite alternate;
-        }
+        /* Animaciones */
+        @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        @keyframes drop { to { top: calc(100% - 135px); } }
+        @keyframes grow { to { stroke-dashoffset: 0; } }
+        @keyframes bloom { to { opacity: 1; transform: scale(1); } }
 
-        @keyframes beat {
-            to { transform: scale(1.2); }
-        }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <h1>Para mi novio <span class="heart">❤️</span></h1>
-        <p>Eres lo más especial de mi vida.</p>
-
-        <div class="tree-canvas" id="garden">
-            <div class="trunk"></div>
-            </div>
-
-        <div class="timer-box">
-            <p>Llevamos juntos:</p>
-            <div id="timer">Cargando nuestro tiempo...</div>
+    <div id="main-container">
+        <div class="initial-stage" id="start-node">
+            <div class="sunflower" id="sunflower-ui">
+                <div class="center"></div>
+                </div>
+            <span class="flower-label">Flores para ti ✨</span>
         </div>
 
-        <p style="margin-top: 20px; font-size: 0.9rem; color: #777;">
-            Desde el 1 de junio de 2025
-        </p>
+        <div class="falling-seed" id="seed"></div>
+        <div class="ground-line" id="line"></div>
+
+        <svg class="tree-svg" id="tree-canvas" viewBox="0 0 200 200">
+            <path id="trunk-path" class="trunk" d="M100,200 Q100,150 100,100 Q100,50 60,30 M100,100 Q100,50 140,30 M100,130 Q80,100 50,80 M100,130 Q120,100 150,80" />
+            <g id="flower-garden"></g>
+        </svg>
+
+        <div class="counter-section" id="stats">
+            <p style="margin-bottom: 0;">Mi amor por ti comenzó hace...</p>
+            <div id="timer"></div>
+            <p style="font-family: 'Pacifico'; font-size: 1.4rem; margin-top: 15px;">Te amo más que ayer</p>
+        </div>
     </div>
 
     <script>
-        /* --- AQUÍ EMPIEZA EL JAVASCRIPT (LA LÓGICA) --- */
-        
-        // 1. Lógica del Contador
-        const startDate = new Date('2025-06-01T00:00:00');
-
-        function updateTimer() {
-            const now = new Date();
-            const diff = now - startDate;
-
-            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-            const minutes = Math.floor((diff / 1000 / 60) % 60);
-            const seconds = Math.floor((diff / 1000) % 60);
-
-            document.getElementById('timer').innerHTML = 
-                `${days} días, ${hours} horas, <br>${minutes} min y ${seconds} seg`;
+        // Generar pétalos de la flor inicial
+        const sunflower = document.getElementById('sunflower-ui');
+        for (let i = 0; i < 12; i++) {
+            const p = document.createElement('div');
+            p.className = 'petal';
+            p.style.transform = `rotate(${i * 30}deg)`;
+            sunflower.appendChild(p);
         }
 
-        setInterval(updateTimer, 1000);
-        updateTimer();
+        const startNode = document.getElementById('start-node');
+        const seed = document.getElementById('seed');
+        const line = document.getElementById('line');
+        const treeCanvas = document.getElementById('tree-canvas');
+        const trunkPath = document.getElementById('trunk-path');
+        const garden = document.getElementById('flower-garden');
+        const stats = document.getElementById('stats');
 
-        // 2. Generar Flores Amarillas aleatoriamente en el árbol
-        const garden = document.getElementById('garden');
-        for (let i = 0; i < 30; i++) {
-            const flower = document.createElement('div');
-            flower.className = 'flower';
-            
-            // Posiciones aleatorias para formar la "copa" del árbol
-            const x = Math.random() * 160 + 20; 
-            const y = Math.random() * 120 + 20;
-            
-            flower.style.left = x + 'px';
-            flower.style.top = y + 'px';
-            flower.style.animationDelay = (Math.random() * 2 + 1.5) + 's';
-            
-            garden.appendChild(flower);
+        startNode.addEventListener('click', () => {
+            // Desaparecer flor inicial
+            startNode.style.opacity = '0';
+            setTimeout(() => {
+                startNode.style.display = 'none';
+                
+                // Mostrar línea de tierra
+                line.style.width = '200px';
+                
+                // Soltar semilla
+                seed.style.display = 'block';
+                seed.style.left = '50%';
+                seed.style.top = '45%';
+                seed.style.animation = 'drop 1.2s cubic-bezier(0.5, 0.05, 1, 0.5) forwards';
+            }, 800);
+
+            // Iniciar crecimiento del árbol
+            setTimeout(() => {
+                seed.style.display = 'none';
+                treeCanvas.style.display = 'block';
+                trunkPath.style.animation = 'grow 3s ease-out forwards';
+                
+                generateHeartFlowers();
+            }, 2200);
+        });
+
+        function generateHeartFlowers() {
+            const total = 100;
+            for (let i = 0; i < total; i++) {
+                const t = (i / total) * 2 * Math.PI;
+                // Ecuación de corazón
+                const x = 16 * Math.pow(Math.sin(t), 3);
+                const y = -(13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t));
+
+                const flower = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+                flower.setAttribute("class", "mini-flower");
+                flower.setAttribute("cx", 100 + (x * 3.5));
+                flower.setAttribute("cy", 70 + (y * 3.5));
+                flower.setAttribute("r", Math.random() * 2 + 1.5);
+                
+                flower.style.animation = `bloom 0.8s ease-out ${3 + Math.random() * 2}s forwards`;
+                garden.appendChild(flower);
+            }
+
+            // Mostrar contador
+            setTimeout(() => {
+                stats.style.opacity = '1';
+                startClock();
+            }, 5500);
+        }
+
+        function startClock() {
+            const begin = new Date('2025-06-12T00:00:00');
+            setInterval(() => {
+                const now = new Date();
+                const d = now - begin;
+                
+                const days = Math.floor(d / 86400000);
+                const hours = Math.floor((d % 86400000) / 3600000);
+                const mins = Math.floor((d % 3600000) / 60000);
+                const secs = Math.floor((d % 60000) / 1000);
+
+                document.getElementById('timer').innerText = 
+                    `${days} días : ${hours}h : ${mins}m : ${secs}s`;
+            }, 1000);
         }
     </script>
 </body>
